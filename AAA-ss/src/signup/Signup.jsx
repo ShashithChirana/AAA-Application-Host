@@ -34,13 +34,9 @@ const Signup = () => {
         localStorage.setItem("token", `Bearer ${data.token}`); // Prefix token with 'Bearer'
         setMessage("User registered successfully");
 
-        // Conditional navigation based on the 'type'
+        // Navigate to login page after registration
         setTimeout(() => {
-          if (type === "Admin") {
-            navigate("/login"); // Redirect to Admin.jsx if type is 'Admin'
-          } else {
-            navigate("/login"); // Redirect to User.jsx if type is 'User'
-          }
+          navigate("/login"); // Always navigate to login after successful registration
         }, 2000);
       } else {
         // Check for specific error message for email already used
