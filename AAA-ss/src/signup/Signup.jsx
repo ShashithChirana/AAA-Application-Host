@@ -14,7 +14,7 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://aaa-application-host-server.vercel.app//register", {
+      const response = await fetch("https://aaa-application-host-server.vercel.app/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

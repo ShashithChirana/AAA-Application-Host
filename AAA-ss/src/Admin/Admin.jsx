@@ -10,7 +10,7 @@ const Admin = () => {
   // Fetch user details
   const fetchUserDetails = async () => {
     try {
-      const response = await fetch("https://aaa-application-host-server.vercel.app//users", {
+      const response = await fetch("https://aaa-application-host-server.vercel.app/users", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +33,7 @@ const Admin = () => {
   // Fetch user actions
   const fetchUserActions = async () => {
     try {
-      const response = await fetch("https://aaa-application-host-server.vercel.app//user-actions", {
+      const response = await fetch("https://aaa-application-host-server.vercel.app/user-actions", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
