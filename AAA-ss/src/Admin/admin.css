@@ -1,0 +1,75 @@
+/* Container for the Admin component */
+.admin-container {
+   background-color: #a5d5ff;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Blue-colored h1 heading */
+.blue-heading {
+  color: rgb(0, 0, 255);
+  font-size: 2.5em;
+}
+
+/* Group buttons together */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Button for fetching user details */
+.user-details-btn, .view-actions-btn {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.user-details-btn:hover, .view-actions-btn:hover {
+  background-color: #45a049;
+}
+
+/* Error message styling */
+.error {
+  color: red;
+  margin-top: 20px;
+}
+
+/* Flexbox layout for user details and actions */
+.details-actions-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px; /* Space between the two columns */
+  margin-top: 20px;
+}
+
+/* User details and actions box */
+.user-details-box, .user-actions-box {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: left;
+  background-color: #f9f9f9;
+  min-width: 250px;
+}
+
+/* Individual detail styling */
+.user-detail, .action-detail {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Align both the details and actions vertically with equal height */
+.user-details-box {
+  align-self: flex-start;
+}
+
+.user-actions-box {
+  align-self: flex-start;
+}

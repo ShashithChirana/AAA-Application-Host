@@ -1,0 +1,43 @@
+/* Container for the whole User component */
+.user-container {
+    text-align: center;
+    padding: 20px;
+    
+  }
+  
+  /* Blue-colored h1 heading */
+  .blue-heading {
+    color: rgb(5, 5, 146);
+    font-size: 2.5em;
+  }
+  
+  /* Paragraph styling */
+  .aaa-paragraph {
+    font-size: 1.3em;
+    line-height: 1.6;
+    margin: 20px auto;
+    max-width: 1400px;
+    text-align: justify;
+    color: #000000;
+    font-style: oblique;
+    font-weight: 600;
+  
+  }
+  
+  /* Image grid container */
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 images per row */
+    gap: 3px; /* Spacing between images */
+    margin-top: 40px;
+    justify-items: center;
+  }
+  
+  /* Styling for each image in the grid */
+  .grid-image {
+    width: 440px; /* Set a fixed width for the images */
+    height: 350px;
+    border-radius: 15px; /* Slightly rounded corners */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Add a shadow for depth */
+  }
+  
