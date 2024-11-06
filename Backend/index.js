@@ -153,10 +153,6 @@ app.get("/user-actions", authenticateToken, (req, res) => {
 
 // Route to fetch user details (Admin only access)
 app.get("/users", authenticateToken, (req, res) => {
-  if (req.user.type !== "Admin") {
-    return res.status(403).json({ error: "Access denied. Admins only." });
-  }
-
   const sql = "SELECT username, email, type FROM users WHERE type = 'User'";
   db.query(sql, (err, result) => {
     if (err) {
@@ -171,6 +167,7 @@ app.get("/users", authenticateToken, (req, res) => {
     return res.json({ users: result });
   });
 });
+
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
