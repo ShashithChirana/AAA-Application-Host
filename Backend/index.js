@@ -171,8 +171,8 @@ app.get("/users", authenticateToken, (req, res) => {
     return res.json({ users: result });
   });
 });
-app.get("/",(req, res) => {
-  res.end("Server successful.");
+app.get("/", (req, res) => {
+  res.send("Server is running");
 });
 // Use environment variable for port or default to 8085
 const PORT = process.env.PORT || 8085;
