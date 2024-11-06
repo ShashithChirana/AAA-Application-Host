@@ -37,9 +37,9 @@ const Signup = () => {
         // Conditional navigation based on the 'type'
         setTimeout(() => {
           if (type === "Admin") {
-            navigate("/admin"); // Redirect to Admin.jsx if type is 'Admin'
+            navigate("/login"); // Redirect to Admin.jsx if type is 'Admin'
           } else {
-            navigate("/user"); // Redirect to User.jsx if type is 'User'
+            navigate("/login"); // Redirect to User.jsx if type is 'User'
           }
         }, 2000);
       } else {

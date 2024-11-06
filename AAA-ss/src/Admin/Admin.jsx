@@ -10,7 +10,7 @@ const Admin = () => {
   // Fetch user details
   const fetchUserDetails = async () => {
     try {
-      const response = await fetch("https://aaa-application-host-server.vercel.app/register/users", {
+      const response = await fetch("https://aaa-application-host-server.vercel.app/users", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
