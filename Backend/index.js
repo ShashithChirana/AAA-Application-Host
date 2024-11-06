@@ -151,17 +151,25 @@ app.get("/user-actions", authenticateToken, (req, res) => {
   });
 });
 
-// Route to fetch user details (Admin only access
-app.get('/users', async (req, res) => {
-  const query = 'SELECT * FROM users';
-
-  try {
-      const [results] = await db.query(query);
-      res.json(results);
-  } catch (err) {
-      console.error('Error fetching users:', err);
-      return res.status(500).send('Server Error');
+// Route to fetch user details (Admin only access)
+app.get("/users", authenticateToken, (req, res) => {
+  if (req.user.type !== "Admin") {
+    return res.status(403).json({ error: "Access denied. Admins only." });
   }
+
+  const sql = "SELECT username, email, type FROM users WHERE type = 'User'";
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: "No users found" });
+    }
+
+    return res.json({ users: result });
+  });
 });
 app.get("/", (req, res) => {
   res.send("Server is running");

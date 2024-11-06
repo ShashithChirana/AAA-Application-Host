@@ -20,10 +20,10 @@ const Admin = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setUsers(data); // Directly use the response data (array of users)
+        setUsers(data.users); // Store the user details in the state
         setError("");
       } else {
-        setError(data.error || "Error fetching users.");
+        setError(data.error);
       }
     } catch (error) {
       setError("Failed to fetch user details.");
@@ -43,10 +43,10 @@ const Admin = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setActions(data); // Directly use the response data (array of actions)
+        setActions(data.actions); // Store the user actions in the state
         setError("");
       } else {
-        setError(data.error || "Error fetching user actions.");
+        setError(data.error);
       }
     } catch (error) {
       setError("Failed to fetch user actions.");
