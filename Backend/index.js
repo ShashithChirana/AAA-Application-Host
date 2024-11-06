@@ -1,13 +1,11 @@
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-
 
 const db = mysql.createConnection({
   host: "beudmixugyf5czadnunz-mysql.services.clever-cloud.com",
@@ -20,18 +18,18 @@ const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; // Ensure you st
 
 // Middleware to verify token
 function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization']; // Get token from Authorization header
+  const authHeader = req.headers['authorization'];
   if (!authHeader) return res.status(401).json("Access Denied: No Token Provided");
 
-  const token = authHeader.split(' ')[1]; // Extract the token part from Bearer Token
-  console.log("Received token:", token); // Debugging: log received token
+  const token = authHeader.split(' ')[1];
+  console.log("Received token:", token);
 
   if (!token) return res.status(401).json("Access Denied: No Token Provided");
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
       if (err.name === "TokenExpiredError") {
-        console.error("Token has expired:", err); // Log expired token error
+        console.error("Token has expired:", err);
         return res.status(401).json({ message: "Your session is about to time out. Please login again." });
       } else {
         console.error("Token verification failed:", err);
@@ -39,7 +37,7 @@ function authenticateToken(req, res, next) {
       }
     }
     req.user = user;
-    next(); // Proceed to the next route
+    next();
   });
 }
 
@@ -50,8 +48,6 @@ db.connect((err) => {
     console.log("Database connected successfully!");
   }
 });
-
-const saltRounds = 10;
 
 // Function to log user actions
 function logUserAction(userId, action) {
@@ -66,12 +62,11 @@ function logUserAction(userId, action) {
 }
 
 // Route for user registration
-app.post("/register", async (req, res) => {
+app.post("/register", (req, res) => {
   const { username, email, password, type } = req.body;
 
-  // Check if the email is already used
   const checkEmailQuery = "SELECT * FROM users WHERE email = ?";
-  db.query(checkEmailQuery, [email], async (err, result) => {
+  db.query(checkEmailQuery, [email], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ error: "Database error" });
@@ -81,34 +76,21 @@ app.post("/register", async (req, res) => {
       return res.status(400).json({ error: "Email already used" });
     }
 
-    try {
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-      const sql = "INSERT INTO users (username, email, type, password) VALUES (?, ?, ?, ?)";
-      const values = [username, email, type, hashedPassword];
+    const sql = "INSERT INTO users (username, email, type, password) VALUES (?, ?, ?, ?)";
+    const values = [username, email, type, password];
 
-      db.query(sql, values, (err, result) => {
-        if (err) {
-          console.error("Database error:", err);
-          return res.status(500).json({ error: "Database error" });
-        }
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ error: "Database error" });
+      }
 
-        // Generate JWT token with 10 seconds expiration
-        const token = jwt.sign({ username, email, type }, JWT_SECRET, {
-          expiresIn: '1h', // Token expires in 10 seconds
-        });
+      const token = jwt.sign({ username, email, type }, JWT_SECRET, { expiresIn: '1h' });
 
-        console.log("Generated JWT Token (Registration):", token); // Log the token to console
-
-        // Log the signup action
-        logUserAction(result.insertId, 'signup');
-
-        console.log("User registered successfully.");
-        return res.json({ message: "User registered successfully", token });
-      });
-    } catch (err) {
-      console.error("Error hashing password:", err);
-      return res.status(500).json({ error: "Error hashing password" });
-    }
+      logUserAction(result.insertId, 'signup');
+      console.log("User registered successfully.");
+      return res.json({ message: "User registered successfully", token });
+    });
   });
 });
 
@@ -117,7 +99,7 @@ app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
   const sql = "SELECT * FROM users WHERE email = ?";
-  db.query(sql, [email], async (err, result) => {
+  db.query(sql, [email], (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ error: "Database error" });
@@ -129,49 +111,32 @@ app.post("/login", (req, res) => {
 
     const user = result[0];
 
-    // Compare the password with the hashed password
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
+    if (password !== user.password) {
       return res.status(400).json({ error: "Incorrect password" });
     }
 
-    // Generate JWT token if login is successful
-    const token = jwt.sign({ username: user.username, email: user.email, type: user.type }, JWT_SECRET, {
-      expiresIn: '1h', // Token expires in 10 seconds
-    });
+    const token = jwt.sign({ username: user.username, email: user.email, type: user.type }, JWT_SECRET, { expiresIn: '1h' });
 
-    console.log("Generated JWT Token (Login):", token); // Log the token to console
-
-    // Log the login action
     logUserAction(user.id, 'login');
-
     console.log("User logged in successfully.");
-    return res.json({ message: "Login successful", token, type: user.type }); // Return token & user type
+    return res.json({ message: "Login successful", token, type: user.type });
   });
 });
 
-// Route for user logout (optional, if you want to handle logout)
+// Route for user logout (optional)
 app.post("/logout", authenticateToken, (req, res) => {
-  // Log the logout action
   logUserAction(req.user.id, 'logout');
-
   console.log("User logged out successfully.");
   return res.json({ message: "Logout successful" });
 });
 
-
-
-
-
 // Route to fetch user actions (Admin only access)
 app.get("/user-actions", authenticateToken, (req, res) => {
-  // Only allow Admins to access this route
   if (req.user.type !== "Admin") {
     return res.status(403).json({ error: "Access denied. Admins only." });
   }
 
-  const sql = "SELECT user_id, action, action_time FROM user_actions"; // Fetch actions from the user_actions table
-
+  const sql = "SELECT user_id, action, action_time FROM user_actions";
   db.query(sql, (err, result) => {
     if (err) {
       console.error("Database error:", err);
@@ -186,23 +151,13 @@ app.get("/user-actions", authenticateToken, (req, res) => {
   });
 });
 
-
-
-
-
-
 // Route to fetch user details (Admin only access)
 app.get("/users", authenticateToken, (req, res) => {
-  // Only allow Admins to access this route
   if (req.user.type !== "Admin") {
     return res.status(403).json({ error: "Access denied. Admins only." });
   }
 
-
-  
-  // Query to select all users (without exposing passwords)
-  const sql = "SELECT username, email, type FROM users WHERE type = 'User'"; 
-
+  const sql = "SELECT username, email, type FROM users WHERE type = 'User'";
   db.query(sql, (err, result) => {
     if (err) {
       console.error("Database error:", err);
@@ -216,7 +171,11 @@ app.get("/users", authenticateToken, (req, res) => {
     return res.json({ users: result });
   });
 });
-
-app.listen(8085, () => {
-  console.log("Backend is running successfully on port 8085.");
+app.post("/", authenticateToken, (req, res) => {
+  console.log("Server successful.");
+});
+// Use environment variable for port or default to 8085
+const PORT = process.env.PORT || 8085;
+app.listen(PORT, () => {
+  console.log(`Backend is running successfully on port ${PORT}.`);
 });
