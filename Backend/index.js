@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const app = express();
 app.use(express.json());
@@ -62,11 +63,11 @@ function logUserAction(userId, action) {
 }
 
 // Route for user registration
-app.post("/register", (req, res) => {
+app.post("/register", async (req, res) => {
   const { username, email, password, type } = req.body;
 
   const checkEmailQuery = "SELECT * FROM users WHERE email = ?";
-  db.query(checkEmailQuery, [email], (err, result) => {
+  db.query(checkEmailQuery, [email], async (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ error: "Database error" });
@@ -76,21 +77,27 @@ app.post("/register", (req, res) => {
       return res.status(400).json({ error: "Email already used" });
     }
 
-    const sql = "INSERT INTO users (username, email, type, password) VALUES (?, ?, ?, ?)";
-    const values = [username, email, type, password];
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const sql = "INSERT INTO users (username, email, type, password) VALUES (?, ?, ?, ?)";
+      const values = [username, email, type, hashedPassword];
 
-    db.query(sql, values, (err, result) => {
-      if (err) {
-        console.error("Database error:", err);
-        return res.status(500).json({ error: "Database error" });
-      }
+      db.query(sql, values, (err, result) => {
+        if (err) {
+          console.error("Database error:", err);
+          return res.status(500).json({ error: "Database error" });
+        }
 
-      const token = jwt.sign({ username, email, type }, JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ username, email, type }, JWT_SECRET, { expiresIn: '1h' });
 
-      logUserAction(result.insertId, 'signup');
-      console.log("User registered successfully.");
-      return res.json({ message: "User registered successfully", token });
-    });
+        logUserAction(result.insertId, 'signup');
+        console.log("User registered successfully.");
+        return res.json({ message: "User registered successfully", token });
+      });
+    } catch (error) {
+      console.error("Error hashing password:", error);
+      return res.status(500).json({ error: "Server error" });
+    }
   });
 });
 
@@ -99,7 +106,7 @@ app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
   const sql = "SELECT * FROM users WHERE email = ?";
-  db.query(sql, [email], (err, result) => {
+  db.query(sql, [email], async (err, result) => {
     if (err) {
       console.error("Database error:", err);
       return res.status(500).json({ error: "Database error" });
@@ -111,15 +118,21 @@ app.post("/login", (req, res) => {
 
     const user = result[0];
 
-    if (password !== user.password) {
-      return res.status(400).json({ error: "Incorrect password" });
+    try {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ error: "Incorrect password" });
+      }
+
+      const token = jwt.sign({ username: user.username, email: user.email, type: user.type }, JWT_SECRET, { expiresIn: '1h' });
+
+      logUserAction(user.id, 'login');
+      console.log("User logged in successfully.");
+      return res.json({ message: "Login successful", token, type: user.type });
+    } catch (error) {
+      console.error("Error comparing passwords:", error);
+      return res.status(500).json({ error: "Server error" });
     }
-
-    const token = jwt.sign({ username: user.username, email: user.email, type: user.type }, JWT_SECRET, { expiresIn: '1h' });
-
-    logUserAction(user.id, 'login');
-    console.log("User logged in successfully.");
-    return res.json({ message: "Login successful", token, type: user.type });
   });
 });
 
@@ -171,9 +184,11 @@ app.get("/users", authenticateToken, (req, res) => {
     return res.json({ users: result });
   });
 });
+
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
+
 // Use environment variable for port or default to 8085
 const PORT = process.env.PORT || 8085;
 app.listen(PORT, () => {
