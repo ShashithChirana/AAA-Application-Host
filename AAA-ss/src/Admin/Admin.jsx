@@ -86,7 +86,7 @@ const Admin = () => {
         {/* Display user actions in a box */}
         {actions.length > 0 && (
           <div className="user-actions-box">
-             <h2>User Actions</h2>
+            <h2>User Actions</h2>
             {actions.map((action, index) => (
               <div key={index} className="action-detail">
                 <p><strong>Action:</strong> {action.action}</p>
