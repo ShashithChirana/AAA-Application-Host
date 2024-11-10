@@ -72,6 +72,7 @@ const Admin = () => {
         {/* Display user details in a box */}
         {users.length > 0 && (
           <div className="user-details-box">
+             <h2>User Details</h2>
             {users.map((user, index) => (
               <div key={index} className="user-detail">
                 <p><strong>Username:</strong> {user.username}</p>
@@ -85,6 +86,7 @@ const Admin = () => {
         {/* Display user actions in a box */}
         {actions.length > 0 && (
           <div className="user-actions-box">
+             <h2>User Actions</h2>
             {actions.map((action, index) => (
               <div key={index} className="action-detail">
                 <p><strong>Action:</strong> {action.action}</p>
