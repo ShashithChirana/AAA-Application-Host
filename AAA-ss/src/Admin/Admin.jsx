@@ -1,11 +1,19 @@
 import React, { useState } from "react";
-import "./admin.css"; // Importing the CSS file
+import "./admin.css"; // Import the CSS file for styling
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
   const [actions, setActions] = useState([]);
   const [error, setError] = useState("");
   const token = localStorage.getItem("token"); // Retrieve the token from local storage
+
+  // Logout function to clear the token and reset the state
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Clear JWT from local storage
+    setUsers([]);
+    setActions([]);
+    setError("");
+  };
 
   // Fetch user details
   const fetchUserDetails = async () => {
@@ -14,7 +22,7 @@ const Admin = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Pass the token correctly as a Bearer token
+          Authorization: `Bearer ${token}`, // Pass the token as a Bearer token
         },
       });
 
@@ -23,7 +31,7 @@ const Admin = () => {
         setUsers(data.users); // Store the user details in the state
         setError("");
       } else {
-        setError(data.error);
+        setError(data.error || "Failed to fetch user details.");
       }
     } catch (error) {
       setError("Failed to fetch user details.");
@@ -37,7 +45,7 @@ const Admin = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Pass the token correctly as a Bearer token
+          Authorization: `Bearer ${token}`, // Pass the token as a Bearer token
         },
       });
 
@@ -46,7 +54,7 @@ const Admin = () => {
         setActions(data.actions); // Store the user actions in the state
         setError("");
       } else {
-        setError(data.error);
+        setError(data.error || "Failed to fetch user actions.");
       }
     } catch (error) {
       setError("Failed to fetch user actions.");
@@ -63,6 +71,9 @@ const Admin = () => {
         <button className="view-actions-btn" onClick={fetchUserActions}>
           View Actions
         </button>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
 
       {error && <p className="error">{error}</p>}
@@ -72,6 +83,7 @@ const Admin = () => {
         {/* Display user details in a box */}
         {users.length > 0 && (
           <div className="user-details-box">
+            <h2>User Details</h2>
             {users.map((user, index) => (
               <div key={index} className="user-detail">
                 <p><strong>Username:</strong> {user.username}</p>
@@ -85,6 +97,7 @@ const Admin = () => {
         {/* Display user actions in a box */}
         {actions.length > 0 && (
           <div className="user-actions-box">
+            <h2>User Actions</h2>
             {actions.map((action, index) => (
               <div key={index} className="action-detail">
                 <p><strong>Action:</strong> {action.action}</p>
