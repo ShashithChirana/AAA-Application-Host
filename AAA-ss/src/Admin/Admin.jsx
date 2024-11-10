@@ -1,11 +1,21 @@
-import React, { useState } from "react";
-import "./admin.css"; // Import the CSS file for styling
+import React, { useState, useEffect } from "react";
+import "./admin.css"; // Importing the CSS file
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
   const [actions, setActions] = useState([]);
   const [error, setError] = useState("");
-  const token = localStorage.getItem("token"); // Retrieve the token from local storage
+  const [token, setToken] = useState("");
+
+  // Retrieve JWT token from local storage when the component mounts
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    } else {
+      setError("No valid session found. Please log in again.");
+    }
+  }, []);
 
   // Fetch user details
   const fetchUserDetails = async () => {
@@ -14,7 +24,7 @@ const Admin = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Pass the token as a Bearer token
+          Authorization: `Bearer ${token}`, // Pass the token correctly as a Bearer token
         },
       });
 
@@ -37,7 +47,7 @@ const Admin = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Pass the token as a Bearer token
+          Authorization: `Bearer ${token}`, // Pass the token correctly as a Bearer token
         },
       });
 
