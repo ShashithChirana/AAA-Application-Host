@@ -7,14 +7,6 @@ const Admin = () => {
   const [error, setError] = useState("");
   const token = localStorage.getItem("token"); // Retrieve the token from local storage
 
-  // Logout function to clear the token and reset the state
-  const handleLogout = () => {
-    localStorage.removeItem("token"); // Clear JWT from local storage
-    setUsers([]);
-    setActions([]);
-    setError("");
-  };
-
   // Fetch user details
   const fetchUserDetails = async () => {
     try {
@@ -70,9 +62,6 @@ const Admin = () => {
         </button>
         <button className="view-actions-btn" onClick={fetchUserActions}>
           View Actions
-        </button>
-        <button className="logout-btn" onClick={handleLogout}>
-          Logout
         </button>
       </div>
 
