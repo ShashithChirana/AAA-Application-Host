@@ -1,21 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./admin.css"; // Importing the CSS file
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
   const [actions, setActions] = useState([]);
   const [error, setError] = useState("");
-  const [token, setToken] = useState("");
-
-  // Retrieve JWT token from local storage when the component mounts
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    } else {
-      setError("No valid session found. Please log in again.");
-    }
-  }, []);
+  const token = localStorage.getItem("token"); // Retrieve the token from local storage
 
   // Fetch user details
   const fetchUserDetails = async () => {
@@ -33,7 +23,7 @@ const Admin = () => {
         setUsers(data.users); // Store the user details in the state
         setError("");
       } else {
-        setError(data.error || "Failed to fetch user details.");
+        setError(data.error);
       }
     } catch (error) {
       setError("Failed to fetch user details.");
@@ -56,7 +46,7 @@ const Admin = () => {
         setActions(data.actions); // Store the user actions in the state
         setError("");
       } else {
-        setError(data.error || "Failed to fetch user actions.");
+        setError(data.error);
       }
     } catch (error) {
       setError("Failed to fetch user actions.");
@@ -82,7 +72,6 @@ const Admin = () => {
         {/* Display user details in a box */}
         {users.length > 0 && (
           <div className="user-details-box">
-            <h2>User Details</h2>
             {users.map((user, index) => (
               <div key={index} className="user-detail">
                 <p><strong>Username:</strong> {user.username}</p>
@@ -96,7 +85,6 @@ const Admin = () => {
         {/* Display user actions in a box */}
         {actions.length > 0 && (
           <div className="user-actions-box">
-            <h2>User Actions</h2>
             {actions.map((action, index) => (
               <div key={index} className="action-detail">
                 <p><strong>Action:</strong> {action.action}</p>

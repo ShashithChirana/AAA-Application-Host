@@ -1,41 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./user.css"; // Importing the CSS file
 import myImage1 from "../Images/A1.png";
 import myImage2 from "../Images/A2.png";
 import myImage3 from "../Images/A3.png";
 
 const User = () => {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState("");
-  const token = localStorage.getItem("token"); // Retrieve the token from local storage
-
-  // Fetch data with JWT token
-  const fetchData = async () => {
-    try {
-      const response = await fetch("https://your-api-endpoint.com/protected-route", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Pass the token as a Bearer token
-        },
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        setData(result.data); // Store the fetched data in state
-        setError("");
-      } else {
-        setError(result.error || "Failed to fetch data.");
-      }
-    } catch (error) {
-      setError("An error occurred while fetching data.");
-    }
-  };
-
-  useEffect(() => {
-    fetchData(); // Call fetchData on component mount if needed
-  }, []);
-
   return (
     <div className="user-container">
       <h1 className="blue-heading">Welcome User!</h1>
@@ -55,19 +24,11 @@ const User = () => {
         in the cloud.
       </p>
 
-      {/* Display any errors or fetched data */}
-      {error && <p className="error">{error}</p>}
-      {data && (
-        <div className="data-display">
-          <h2>Fetched Data</h2>
-          <p>{data}</p>
-        </div>
-      )}
-
       <div className="image-grid">
         <img src={myImage1} alt="AAA 1" className="grid-image" />
         <img src={myImage2} alt="AAA 2" className="grid-image" />
         <img src={myImage3} alt="AAA 3" className="grid-image" />
+        
       </div>
     </div>
   );
