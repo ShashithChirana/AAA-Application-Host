@@ -3,37 +3,52 @@ import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
-const onChange1 = (token) => {
-  console.log("Captcha has been verified with token: ", token);
-  // Send the token to your server for verification
-  fetch("/verify-captcha", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ token }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        console.log("Captcha successfully validated");
-      } else {
-        console.error("Captcha validation failed");
-      }
-    })
-    .catch((error) => {
-      console.error("Error verifying captcha:", error);
-    });
-};
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [captchaVerified, setCaptchaVerified] = useState(false);
   const navigate = useNavigate();
+
+  const onChange1 = (token) => {
+    console.log("Captcha has been verified with token: ", token);
+    fetch("https://aaa-application-host-server.vercel.app/verify-captcha", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Captcha successfully validated");
+          setCaptchaVerified(true);
+        } else {
+          console.error("Captcha validation failed");
+          setCaptchaVerified(false);
+          setMessage("Captcha validation failed. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error verifying captcha:", error);
+        setCaptchaVerified(false);
+        setMessage("Error verifying captcha. Please try again.");
+      });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!captchaVerified) {
+      setMessage("Please verify the CAPTCHA before submitting.");
+      return;
+    }
+
+    if (!email || !password) {
+      setMessage("Email and password are required");
+      return;
+    }
 
     try {
       const response = await fetch("https://aaa-application-host-server.vercel.app/login", {
@@ -41,29 +56,25 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Store the JWT token in localStorage
         localStorage.setItem("token", data.token);
+        setMessage("");
 
-        // Check user type based on the data returned from the server
         if (data.type === "Admin") {
-          navigate("/admin"); // Redirect to Admin.jsx if type is 'Admin'
+          navigate("/admin");
         } else {
-          navigate("/user"); // Redirect to User.jsx if type is 'User'
+          navigate("/user");
         }
       } else {
-        setMessage("Login failed: " + data.error);
+        setMessage(data.error || "Login failed. Please try again.");
       }
     } catch (error) {
-      setMessage("Error during login: " + error);
+      setMessage("Error during login. Please check your network connection.");
     }
   };
 
@@ -72,7 +83,6 @@ const Login = () => {
       <h3>Sign in</h3>
       <form className="addUserForm" onSubmit={handleSubmit}>
         <div className="inputGroup">
-        
           <label htmlFor="email">Email:</label>
           <input
             type="email"
@@ -93,15 +103,15 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-<div className="recaptcha">
-<ReCAPTCHA sitekey="6Lfb8o8qAAAAAJsQIMu76uQX_gsFb-fWRNj3Ghaj" onChange={onChange1}/> </div>
-
-          <button type="submit" className="btn btn-primary">
+          <div className="recaptcha">
+            <ReCAPTCHA sitekey="6Lfb8o8qAAAAAJsQIMu76uQX_gsFb-fWRNj3Ghaj" onChange={onChange1} />
+          </div>
+          <button type="submit" className="btn btn-primary" disabled={!captchaVerified}>
             Login
           </button>
         </div>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className="error-message">{message}</p>}
       <div className="login">
         <p>Don't have an Account?</p>
         <Link to="/signup" className="btn btn-success">
