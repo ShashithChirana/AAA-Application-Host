@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt");
 const express = require('express');
 const fetch = require('node-fetch');
 
-const app = express();
 app.use(express.json());
 app.use(cors());
 
@@ -23,7 +22,6 @@ app.post('/verify-captcha', async (req, res) => {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `secret=${secretKey}&response=${token}`,
     });
-    const data = await response.json();
 
     if (data.success) {
       res.status(200).json({ success: true });
