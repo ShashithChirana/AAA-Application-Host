@@ -1,5 +1,5 @@
 .home-container {
-  background-image: url('../Images/AAAimg.jpg'); /* Replace 'home-bg.jpg' with the path to your background image */
+  background-image: url('../Images/bgHome.png'); /* Replace 'home-bg.jpg' with the path to your background image */
   background-size: cover; /* Makes the background image cover the entire container */
   background-position: center; /* Centers the background image */
   background-repeat: no-repeat; /* Ensures the image doesn't repeat */
