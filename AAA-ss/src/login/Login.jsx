@@ -3,7 +3,28 @@ import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
-const onChange = () => {};
+const onChange1 = (token) => {
+  console.log("Captcha has been verified with token: ", token);
+  // Send the token to your server for verification
+  fetch("/verify-captcha", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        console.log("Captcha successfully validated");
+      } else {
+        console.error("Captcha validation failed");
+      }
+    })
+    .catch((error) => {
+      console.error("Error verifying captcha:", error);
+    });
+};
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -73,7 +94,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 <div className="recaptcha">
-<ReCAPTCHA sitekey="6Lfb8o8qAAAAAJsQIMu76uQX_gsFb-fWRNj3Ghaj" onChange={onChange}/> </div>
+<ReCAPTCHA sitekey="6Lfb8o8qAAAAAJsQIMu76uQX_gsFb-fWRNj3Ghaj" onChange={onChange1}/> </div>
 
           <button type="submit" className="btn btn-primary">
             Login
