@@ -1,38 +1,41 @@
 .home-container {
-  background-color: rgb(255, 255, 255);
-    text-align: center;
-    padding: 50px;
-    background-image: url('AAAimg.jpg');
-  }
-  
-  .home-heading {
-    font-size: 3rem;
-    color: rgb(5, 5, 185);
-    margin-bottom: 20px;
-  }
-  
-  .home-image {
-    width: 1000px;
-    height: 5000px;
-    margin-bottom: 20px; /* Space between the image and the button */
-    object-fit: cover;
-    border-radius: 20px;
-  }
-  
-  .home-button {
-    background-color: #055ab5;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: inline-block; /* Optional: Makes button align nicely */
-  }
-  
-  .home-button:hover {
-    background-color: #2b91ff;
-    color: rgb(0, 0, 0);
-  }
-  
+  background-image: url('AAAimg.jpg'); /* Replace 'home-bg.jpg' with the path to your background image */
+  background-size: cover; /* Makes the background image cover the entire container */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Ensures the image doesn't repeat */
+  text-align: center;
+  padding: 50px;
+  color: #fff; /* Adjust text color to ensure it's readable over the background image */
+}
+
+.home-heading {
+  font-size: 3rem;
+  color: #ffeb3b; /* Bright color for better visibility on background */
+  margin-bottom: 20px;
+}
+
+.home-image {
+  width: 700px;
+  height: 500px;
+  margin-bottom: 20px; /* Space between the image and the button */
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds a nice shadow effect to the image */
+}
+
+.home-button {
+  background-color: #055ab5;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block; /* Optional: Makes button align nicely */
+}
+
+.home-button:hover {
+  background-color: #2b91ff;
+  color: rgb(0, 0, 0);
+}
