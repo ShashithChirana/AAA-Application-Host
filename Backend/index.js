@@ -3,42 +3,10 @@ const mysql = require("mysql2");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const express = require('express');
-const fetch = require('node-fetch');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-
-
-
-app.post('/verify-captcha', async (req, res) => {
-  const { token } = req.body;
-  const secretKey = '6Lfb8o8qAAAAAD7A6bR27MHNrek3Nyf_IRBbN4pw'; // Replace with your reCAPTCHA secret key
-
-  // Make a request to the Google reCAPTCHA API
-  try {
-    const response = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `secret=${secretKey}&response=${token}`,
-    });
-    const data = await response.json();
-
-    if (data.success) {
-      res.status(200).json({ success: true });
-    } else {
-      res.status(400).json({ success: false, errors: data['error-codes'] });
-    }
-  } catch (error) {
-    console.error('Error validating captcha:', error);
-    res.status(500).json({ success: false, error: 'Server error' });
-  }
-});
-
-app.listen(8085, () => console.log('Server running on port 8085'));
-
-
 
 const db = mysql.createConnection({
   host: "beudmixugyf5czadnunz-mysql.services.clever-cloud.com",
@@ -226,4 +194,3 @@ const PORT = process.env.PORT || 8085;
 app.listen(PORT, () => {
   console.log(`Backend is running successfully on port ${PORT}.`);
 });
-
