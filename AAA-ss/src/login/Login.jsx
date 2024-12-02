@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
+
+const onChange = () => {};
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -48,6 +51,7 @@ const Login = () => {
       <h3>Sign in</h3>
       <form className="addUserForm" onSubmit={handleSubmit}>
         <div className="inputGroup">
+        
           <label htmlFor="email">Email:</label>
           <input
             type="email"
@@ -68,6 +72,8 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+
+<ReCAPTCHA sitekey="6Lfb8o8qAAAAAJsQIMu76uQX_gsFb-fWRNj3Ghaj" onChange={onChange}/> 
 
           <button type="submit" className="btn btn-primary">
             Login
