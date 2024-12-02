@@ -11,13 +11,7 @@
     margin-bottom: 20px;
   }
   
-  .home-image {
-    width: 700px;
-    height: 500px;
-    margin-bottom: 20px; /* Space between the image and the button */
-    object-fit: cover;
-    border-radius: 20px;
-  }
+  
   
   .home-button {
     background-color: #055ab5;
