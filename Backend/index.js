@@ -14,7 +14,7 @@ app.use(cors());
 
 app.post('/verify-captcha', async (req, res) => {
   const { token } = req.body;
-  const secretKey = 'YOUR_SECRET_KEY'; // Replace with your reCAPTCHA secret key
+  const secretKey = '6Lfb8o8qAAAAAD7A6bR27MHNrek3Nyf_IRBbN4pw'; // Replace with your reCAPTCHA secret key
 
   // Make a request to the Google reCAPTCHA API
   try {
