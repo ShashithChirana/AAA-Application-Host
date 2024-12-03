@@ -164,7 +164,7 @@ app.get("/user-actions", authenticateToken, (req, res) => {
   });
 });
 
-// Route to fetch user details (Admin only access)
+// Route to fetch user details (Admin only acess)
 app.get("/users", authenticateToken, (req, res) => {
   if (req.user.type !== "Admin") {
     return res.status(403).json({ error: "Access denied. Admins only." });
