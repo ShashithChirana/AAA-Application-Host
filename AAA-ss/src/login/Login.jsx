@@ -17,38 +17,6 @@ const Login = () => {
       setMessage("Please complete the reCAPTCHA to proceed.");
       return;
     }
-
-    try {
-      const response = await fetch("https://aaa-application-host-server.vercel.app/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          recaptchaToken, // Send the reCAPTCHA token to the server
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Store the JWT token in localStorage
-        localStorage.setItem("token", data.token);
-
-        // Redirect based on user type
-        if (data.type === "Admin") {
-          navigate("/admin");
-        } else {
-          navigate("/user");
-        }
-      } else {
-        setMessage("Login failed: " + data.error);
-      }
-    } catch (error) {
-      setMessage("Error during login: " + error);
-    }
   };
 
   return (
