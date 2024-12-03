@@ -3,10 +3,7 @@ import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
-const onChange = (value) => {
-  console.log("Captcha has been verified");
 
-};
 
 const [recaptchaToken, setRecaptchaToken] = useState(""); 
 
@@ -77,8 +74,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-<div className="recaptcha">
-<ReCAPTCHA sitekey="6Lfb8o8qAAAAAJsQIMu76uQX_gsFb-fWRNj3Ghaj" onChange={onChange}/> </div>
+
 
           <button type="submit" className="btn btn-primary">
             Login
