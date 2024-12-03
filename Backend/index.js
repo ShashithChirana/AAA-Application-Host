@@ -169,49 +169,6 @@ app.get("/user-actions", authenticateToken, (req, res) => {
 
 
 
-const express = require("express");
-const fetch = require("node-fetch"); // Ensure this is installed
-const app1 = express();
-
-app1.use(express.json()); // Parse JSON request bodies
-
-app1.post("/login", async (req, res) => {
-  const { email, password, recaptchaToken } = req.body;
-
-  // Check if reCAPTCHA token is provided
-  if (!recaptchaToken) {
-    return res.status(400).json({ error: "reCAPTCHA token is missing" });
-  }
-
-  try {
-    
-    const recaptchaResponse = await fetch(
-      `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`,
-      {
-        method: "POST",
-      }
-    );
-
-    const recaptchaData = await recaptchaResponse.json();
-
-    if (!recaptchaData.success) {
-      console.error("reCAPTCHA verification failed:", recaptchaData["error-codes"]);
-      return res.status(400).json({ error: "Invalid reCAPTCHA. Verification failed." });
-    }
-
-
-   
-  } catch (error) {
-    console.error("Error during reCAPTCHA verification or login:", error);
-    return res.status(500).json({ error: "Server error. Please try again later." });
-  }
-});
-
-// Start the server
-app1.listen(8085, () => {
-  console.log("Server running on port 8085");
-});
-
 
 
 
