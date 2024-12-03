@@ -4,16 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
 
-const [recaptchaToken, setRecaptchaToken] = useState(""); 
 
 const onChange = (value) => {
   console.log("Captcha has been verified");
-  setRecaptchaToken(value); 
-
-  if (!recaptchaToken) {
-    setMessage("Please complete the reCAPTCHA to proceed.");
-    return;
-  }
  
 };
 
