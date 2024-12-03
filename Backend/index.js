@@ -187,7 +187,7 @@ app1.post("/login", async (req, res) => {
     // Verify the reCAPTCHA token with Google's API
     const secretKey = "6Lfb8o8qAAAAAD7A6bR27MHNrek3Nyf_IRBbN4pw"; // Replace with your reCAPTCHA secret key
     const recaptchaResponse = await fetch(
-      `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`,
+      `https://aaa-application-host-server.vercel.app/login=${secretKey}&response=${recaptchaToken}`,
       {
         method: "POST",
       }
