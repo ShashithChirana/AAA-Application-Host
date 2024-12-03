@@ -18,7 +18,24 @@ const Login = () => {
       return;
     }
 
+   
 
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store the JWT token in localStorage
+        localStorage.setItem("token", data.token);
+
+        // Redirect based on user type
+        if (data.type === "Admin") {
+          navigate("/admin");
+        } else {
+          navigate("/user");
+        }
+      } else {
+        setMessage("Login failed: " + data.error);
+      
+    } 
   };
 
   return (
