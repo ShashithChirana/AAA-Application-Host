@@ -3,18 +3,20 @@ import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
-const onChange = () => {
-  console.log("Captcha has been verified");
-};
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!recaptchaToken) {
+      setMessage("Please complete the reCAPTCHA to proceed.");
+      return;
+    }
 
     try {
       const response = await fetch("https://aaa-application-host-server.vercel.app/login", {
@@ -25,6 +27,7 @@ const Login = () => {
         body: JSON.stringify({
           email,
           password,
+          recaptchaToken, // Send the reCAPTCHA token to the server
         }),
       });
 
@@ -34,11 +37,11 @@ const Login = () => {
         // Store the JWT token in localStorage
         localStorage.setItem("token", data.token);
 
-        // Check user type based on the data returned from the server
+        // Redirect based on user type
         if (data.type === "Admin") {
-          navigate("/admin"); // Redirect to Admin.jsx if type is 'Admin'
+          navigate("/admin");
         } else {
-          navigate("/user"); // Redirect to User.jsx if type is 'User'
+          navigate("/user");
         }
       } else {
         setMessage("Login failed: " + data.error);
@@ -53,7 +56,6 @@ const Login = () => {
       <h3>Sign in</h3>
       <form className="addUserForm" onSubmit={handleSubmit}>
         <div className="inputGroup">
-        
           <label htmlFor="email">Email:</label>
           <input
             type="email"
@@ -74,9 +76,14 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-<div className="recaptcha">
-<ReCAPTCHA sitekey="6Lfb8o8qAAAAAJsQIMu76uQX_gsFb-fWRNj3Ghaj" onChange={onChange}/> </div>
-
+          <div className="recaptcha">
+            <ReCAPTCHA
+              sitekey="6Lfb8o8qAAAAAJsQIMu76uQX_gsFb-fWRNj3Ghaj"
+              onChange={(value) => {
+                setRecaptchaToken(value);
+              }}
+            />
+          </div>
           <button type="submit" className="btn btn-primary">
             Login
           </button>

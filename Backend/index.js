@@ -164,6 +164,49 @@ app.get("/user-actions", authenticateToken, (req, res) => {
   });
 });
 
+
+
+
+const express = require("express");
+const fetch = require("node-fetch");
+
+const app1 = express();
+app1.use(express.json());
+
+app1.post("/login", async (req, res) => {
+  const { email, password, recaptchaToken } = req.body;
+
+  if (!recaptchaToken) {
+    return res.status(400).json({ error: "reCAPTCHA token is missing" });
+  }
+
+  // Verify the reCAPTCHA token
+  const secretKey = "6Lfb8o8qAAAAAD7A6bR27MHNrek3Nyf_IRBbN4pw"; // Replace with your reCAPTCHA secret key
+  const recaptchaResponse = await fetch(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`,
+    {
+      method: "POST",
+    }
+  );
+  const recaptchaData = await recaptchaResponse.json();
+
+  if (!recaptchaData.success) {
+    return res.status(400).json({ error: "Invalid reCAPTCHA" });
+  }
+
+  // Handle login logic (authentication, token generation, etc.)
+  // ...
+
+  res.status(200).json({ token: "exampleToken", type: "User" }); // Example response
+});
+
+app1.listen(8085, () => {
+  console.log("Server running on port 8085");
+});
+
+
+
+
 // Route to fetch user details (Admin only access)
 app.get("/users", authenticateToken, (req, res) => {
   if (req.user.type !== "Admin") {
@@ -194,3 +237,6 @@ const PORT = process.env.PORT || 8085;
 app.listen(PORT, () => {
   console.log(`Backend is running successfully on port ${PORT}.`);
 });
+
+
+
