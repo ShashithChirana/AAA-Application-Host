@@ -4,7 +4,18 @@ import { Link, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
 
+const [recaptchaToken, setRecaptchaToken] = useState(""); 
 
+const onChange = (value) => {
+  console.log("Captcha has been verified");
+  setRecaptchaToken(value); 
+
+  if (!recaptchaToken) {
+    setMessage("Please complete the reCAPTCHA to proceed.");
+    return;
+  }
+ 
+};
 
 
 const Login = () => {
@@ -74,7 +85,8 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-
+<div className="recaptcha">
+<ReCAPTCHA sitekey="6Lfb8o8qAAAAAJsQIMu76uQX_gsFb-fWRNj3Ghaj" onChange={onChange}/> </div>
 
           <button type="submit" className="btn btn-primary">
             Login
