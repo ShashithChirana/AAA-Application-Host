@@ -164,7 +164,11 @@ app.get("/user-actions", authenticateToken, (req, res) => {
   });
 });
 
-// Route to fetch user details (Admin only acess)
+
+
+
+
+// Route to fetch user details (Admin only access)
 app.get("/users", authenticateToken, (req, res) => {
   if (req.user.type !== "Admin") {
     return res.status(403).json({ error: "Access denied. Admins only." });
@@ -194,3 +198,6 @@ const PORT = process.env.PORT || 8085;
 app.listen(PORT, () => {
   console.log(`Backend is running successfully on port ${PORT}.`);
 });
+
+
+
