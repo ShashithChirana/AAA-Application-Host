@@ -167,42 +167,64 @@ app.get("/user-actions", authenticateToken, (req, res) => {
 
 
 
-const express = require("express");
-const fetch = require("node-fetch");
 
+
+const express = require("express");
+const fetch = require("node-fetch"); // Ensure this is installed
 const app1 = express();
-app1.use(express.json());
+
+app1.use(express.json()); // Parse JSON request bodies
 
 app1.post("/login", async (req, res) => {
   const { email, password, recaptchaToken } = req.body;
 
+  // Check if reCAPTCHA token is provided
   if (!recaptchaToken) {
     return res.status(400).json({ error: "reCAPTCHA token is missing" });
   }
 
-  // Verify the reCAPTCHA token
-  const secretKey = "6Lfb8o8qAAAAAD7A6bR27MHNrek3Nyf_IRBbN4pw"; // Replace with your reCAPTCHA secret key
-  const recaptchaResponse = await fetch(
-    `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`,
-    {
-      method: "POST",
+  try {
+    // Verify the reCAPTCHA token with Google's API
+    const secretKey = "6Lfb8o8qAAAAAD7A6bR27MHNrek3Nyf_IRBbN4pw"; // Replace with your reCAPTCHA secret key
+    const recaptchaResponse = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`,
+      {
+        method: "POST",
+      }
+    );
+
+    const recaptchaData = await recaptchaResponse.json();
+
+    if (!recaptchaData.success) {
+      console.error("reCAPTCHA verification failed:", recaptchaData["error-codes"]);
+      return res.status(400).json({ error: "Invalid reCAPTCHA. Verification failed." });
     }
-  );
-  const recaptchaData = await recaptchaResponse.json();
 
-  if (!recaptchaData.success) {
-    return res.status(400).json({ error: "Invalid reCAPTCHA" });
+    // Proceed with login logic
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    // Example: Replace this with your actual user authentication logic
+    if (email === "test@example.com" && password === "password123") {
+      // Example: Token generation (use a real library like jsonwebtoken in production)
+      const token = "exampleToken"; // Replace with actual token generation
+      const userType = "User"; // Replace with actual user type lookup
+      return res.status(200).json({ token, type: userType });
+    } else {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+  } catch (error) {
+    console.error("Error during reCAPTCHA verification or login:", error);
+    return res.status(500).json({ error: "Server error. Please try again later." });
   }
-
-  // Handle login logic (authentication, token generation, etc.)
-  // ...
-
-  res.status(200).json({ token: "exampleToken", type: "User" }); // Example response
 });
 
+// Start the server
 app1.listen(8085, () => {
   console.log("Server running on port 8085");
 });
+
 
 
 
