@@ -20,7 +20,7 @@ const Login = () => {
 
     try {
       const response = await fetch("https://aaa-application-host-server.vercel.app/login", {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
