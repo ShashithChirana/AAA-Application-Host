@@ -1,41 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Montserrat:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.frame{
+  padding: 5px; /* Add padding inside the border */
+  background-color: rgb(255, 255, 255); /* White background like a document */
+  border: 18px solid rgb(3, 1, 42); /* White border to simulate document frame */
+  border-radius: 1px;
+ 
+}
+
+
 .home-container {
-  background-image: url('../Images/bgHome.png'); /* Replace 'home-bg.jpg' with the path to your background image */
-  background-size: cover; /* Makes the background image cover the entire container */
-  background-position: center; /* Centers the background image */
-  background-repeat: no-repeat; /* Ensures the image doesn't repeat */
-  text-align: center;
-  padding: 50px;
-  color: #fff; /* Adjust text color to ensure it's readable over the background image */
+  background-image: url('../Images/bgimge333.jpg'); /* Replace 'home-bg.jpg' with the path to your background image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 95vh;
+  border-radius: 15px;
 }
 
 .home-heading {
-  font-size: 3rem;
-  color: #00bbff; /* Bright color for better visibility on background */
+  font-family: 'Montserrat', sans-serif;
+  font-size: 7rem;
+  color: #ffffff; /* Bright color for better visibility on background */
   margin-bottom: 20px;
+  text-align: center;
+  padding-top: 170px;
+  font-weight: bold;
+  text-shadow: 10cap;
+  text-shadow: #ffffff;
 }
 
-.home-image {
-  width: 700px;
-  height: 500px;
-  margin-bottom: 20px; /* Space between the image and the button */
-  object-fit: cover;
-  border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds a nice shadow effect to the image */
+.home-heading2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 5rem;
+  color: #ffffff; /* Bright color for better visibility on background */
+  text-align: center;
+  padding-top: 5px;
+  font-weight: bold;
 }
 
 .home-button {
-  background-color: #055ab5;
-  color: white;
-  padding: 10px 20px;
+  background-color: #ffffff;
+  color: rgb(4, 0, 79);
+  padding: 18px 27px;
   border: none;
-  border-radius: 5px;
-  font-size: 1.2rem;
+  border-radius: 15px;
+  font-size: 1.6rem;
+  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  display: inline-block; /* Optional: Makes button align nicely */
+  align-items: center;
+  margin-left: 44%;
+  margin-top: 40px; 
+
 }
 
 .home-button:hover {
-  background-color: #2b91ff;
-  color: rgb(0, 0, 0);
+  background-color: #0050a7;
+  color: rgb(255, 255, 255);
 }
