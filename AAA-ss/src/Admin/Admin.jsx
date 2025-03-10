@@ -55,7 +55,7 @@ const Admin = () => {
 
   return (
     <div className="admin-container">
-      <h1 className="blue-heading">Welcome Admin!</h1>
+      <h1 className="blue-heading1">Welcome Admin!</h1>
       <div className="button-group">
         <button className="user-details-btn" onClick={fetchUserDetails}>
           User Details
@@ -84,6 +84,7 @@ const Admin = () => {
 
         {/* Display user actions in a box */}
         {actions.length > 0 && (
+
           <div className="user-actions-box">
             {actions.map((action, index) => (
               <div key={index} className="action-detail">

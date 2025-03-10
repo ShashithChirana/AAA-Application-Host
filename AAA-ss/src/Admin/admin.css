@@ -1,14 +1,23 @@
+body {
+  background: url('../Images/lck4.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: Arial, sans-serif;
+}
+
 /* Container for the Admin component */
 .admin-container {
-   background-color: #a5d5ff;
+  background: url('../Images/lck4.jpg') no-repeat center center fixed; 
+  background-size: cover;
+   background-color: #a5d5ff57;
   text-align: center;
   padding: 20px;
 }
 
 /* Blue-colored h1 heading */
-.blue-heading {
-  color: rgb(0, 0, 255);
+.blue-heading1 {
+color: #00bfff;
   font-size: 2.5em;
+  
 }
 
 /* Group buttons together */
@@ -20,17 +29,17 @@
 
 /* Button for fetching user details */
 .user-details-btn, .view-actions-btn {
-  background-color: #4CAF50; /* Green */
+  background-color: #0023bd; /* Green */
   color: white;
   padding: 10px 20px;
   font-size: 1.2em;
-  border: none;
+  border-radius: 10px;
   cursor: pointer;
   margin-top: 20px;
 }
 
 .user-details-btn:hover, .view-actions-btn:hover {
-  background-color: #45a049;
+  background-color: #002745;
 }
 
 /* Error message styling */
@@ -45,24 +54,29 @@
   justify-content: center;
   gap: 30px; /* Space between the two columns */
   margin-top: 20px;
+  margin-left: 120px;
+  margin-right: 120px;
 }
 
 /* User details and actions box */
 .user-details-box, .user-actions-box {
   flex: 1;
   padding: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #ffffff;
   border-radius: 10px;
   text-align: left;
-  background-color: #f9f9f9;
+  background-color: rgba(0, 162, 255, 0.729);
   min-width: 250px;
+  color: #00033c;
+  font-weight: bold;
+  font-size: large;
 }
 
 /* Individual detail styling */
 .user-detail, .action-detail {
   margin-bottom: 15px;
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #fdfdfd;
 }
 
 /* Align both the details and actions vertically with equal height */

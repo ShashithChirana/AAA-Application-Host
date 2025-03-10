@@ -2,24 +2,29 @@
 
 /* Apply background image to the entire page */
 body {
-  background: url('../Images/bgHome.png') no-repeat center center fixed;
+  background: url('../Images/lck4.jpg') no-repeat center center fixed;
   background-size: cover;
   font-family: Arial, sans-serif;
 }
 /* Glassmorphism effect for the sign-up form */
 .addUser {
-  background: rgba(255, 255, 255, 0.119); /* Semi-transparent white */
+  background: rgba(255, 255, 255, 0.126); /* Semi-transparent white */
   backdrop-filter: blur(10px); /* Blur effect */
   -webkit-backdrop-filter: blur(10px); /* Safari support */
   width: 50%;
   margin: 50px auto;
   padding: 60px;
-  border-radius: 10px;
+  border-radius: 30px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   color: rgb(255, 255, 255);
   border: 1px solid rgb(255, 255, 255); /* Light border for depth */
 }
 
+.btn-success{
+  background-color: #0208bb;
+  border-color: #0000a8;
+  color: #fff;
+}
 /* Form layout */
 .addUserForm .inputGroup {
   width: 100%;
@@ -55,8 +60,8 @@ body {
 /* Input focus effect */
 .addUserForm .inputGroup input:focus,
 .addUserForm .inputGroup select:focus {
-  border-color: #003874;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  border-color: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 /* Button styling */
