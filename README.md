@@ -12,6 +12,6 @@ Implements JWT for secure session handling.
 
 ###  Tech Stack
 
-Backend: Node.js
-Database: MySQL
+Backend: Node.js  |
+Database: MySQL   |
 Security: JWT, bcrypt
